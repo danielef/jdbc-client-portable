@@ -3,7 +3,7 @@
   (:require [clojure.java.jdbc :as j]
             [clojure.tools.cli :refer [parse-opts]]))
 
-(def cli-options 
+(def cli-options
   [["-a" "--classname DRIVER" "Driver classname"]
    ["-b" "--subprotocol SUBPROTOCOL" "Subprotocol associated with driver"]
    ["-c" "--subname SUBNAME_PATH" "jdbcURL without prefix (//localhost:...)"]
@@ -15,13 +15,15 @@
 (defn -main[& args]
   (try
     (let [{:keys [options arguments summary errors]} (parse-opts args cli-options)
-          {:keys [help query]} options]
+          {:keys [help query]} options
+          db-params (dissoc options :query :help)]
       (if help
         (println summary))
       (if errors
         (println errors))
-      
-      (println (j/query (dissoc options :query :help)
-                        [query])))
+      (if query
+        (println (j/query db-params 
+                          [query]))
+        (println (str "--query is nil\n" summary))))
     (catch Exception e
-      (.printStackTrace e))))
+      (println (.getMessage e)))))
