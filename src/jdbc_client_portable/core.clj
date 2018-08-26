@@ -12,7 +12,7 @@
    ["-U" "--user USERNAME" "database user"]
    ["-P" "--password PASSWORD" "database password"]
    ["-C" "--connection-uri URI" "subprotocol://user:password@host:post/subname"]
-   ["-R" "--subprotocol SUBPROTOCOL" "dubprotocol associated with driver"]
+   ["-R" "--subprotocol SUBPROTOCOL" "subprotocol associated with driver"]
    ["-S" "--subname SUBNAME_PATH" "jdbcURL without prefix (//localhost:...)"]
    
    ["-Q" "--query QUERY" "database query"]
