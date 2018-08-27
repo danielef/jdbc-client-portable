@@ -1,7 +1,8 @@
 (ns jdbc-client-portable.core
   (:gen-class)
   (:require [clojure.java.jdbc :as j]
-            [clojure.tools.cli :refer [parse-opts]]))
+            [clojure.tools.cli :refer [parse-opts]]
+            [jdbc-client-portable.ui :as ui]))
 
 (def cli-options
   [["-T" "--dbtype DBTYPE" "type of the database (the jdbc subprotocol)"]
@@ -24,7 +25,7 @@
           {:keys [help query]} options
           db-params (dissoc options :query :help)]
       (if help
-        (println summary))
+        (ui/one))
       (if errors
         (println errors))
       (if query
