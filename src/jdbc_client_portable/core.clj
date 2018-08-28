@@ -1,6 +1,7 @@
 (ns jdbc-client-portable.core
   (:gen-class)
-  (:require [clojure.java.jdbc :as j]
+  (:require [clojure.data.json :as json]
+            [clojure.java.jdbc :as j]
             [clojure.tools.cli :refer [parse-opts]]))
 
 (def cli-options
@@ -16,20 +17,21 @@
    ["-S" "--subname SUBNAME_PATH" "jdbcURL without prefix (//localhost:...)"]
    
    ["-Q" "--query QUERY" "database query"]
+   ["-j" "--json" "prints result in JSON format"]
    ["-h" "--help" "this usage print"]])
 
 (defn -main[& args]
   (try
     (let [{:keys [options arguments summary errors]} (parse-opts args cli-options)
-          {:keys [help query]} options
+          {:keys [help json query]} options
           db-params (dissoc options :query :help)]
       (if help
         (println summary))
       (if errors
         (println errors))
       (if query
-        (println (j/query db-params 
-                          [query]))
+        (println (cond-> (j/query db-params [query])
+                   json (json/write-str)))
         (println (str "--query is nil\n" summary))))
     (catch Exception e
       (println (.getMessage e)))))
