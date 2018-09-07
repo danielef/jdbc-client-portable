@@ -40,7 +40,6 @@ if test -z "$JDBCCP_JVM_OPTS"; then
   export JDBCCP_JVM_OPTS="-server "
 fi
 
-export JDBCCP_NAME=iw-robot
 export JDBCCP_STARTER=jdbc_client_portable.core
 
 # Check for JAVA
