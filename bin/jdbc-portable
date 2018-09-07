@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# Environment variables to determine startup behavior
+#
+# JDBCCP_BIN      Location of this file
+# JDBCCP_HOME     Location of this directory
+# JDBCCP_LIB      Location of JAR dependency
+# MINIMUM_MEMORY   Minimum Memory of JVM
+# MAXIMUM_MEMORY   Maximum Memory of JVM
+# TIMEZONE        ID for a TimeZone, either an abbreviation such as 
+#                 "PST", a full name such as "America/Los_Angeles", or
+#                 a custom ID such as "GMT-8:00".
+# JDBCCP_JVM_OPTS Exact Java Options to run a JVM
+
+if test -z "$JDBCCP_BIN"; then
+  export JDBCCP_BIN="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+fi
+
+if test -z "$JDBCCP_HOME"; then
+  export JDBCCP_HOME=$(dirname $JDBCCP_BIN)
+fi
+
+if test -z "$JDBCCP_LIB"; then
+  export JDBCCP_LIB=$JDBCCP_HOME/lib/*:$JDBCCP_HOME/target/*
+fi
+
+if test -z "$MININUM_MEMORY"; then
+  export MININUM_MEMORY=512m
+fi
+
+if test -z "$MAXIMUM_MEMORY"; then
+  export MAXIMUM_MEMORY=512m
+fi
+
+if test -z "$TIMEZONE"; then 
+  export TIMEZONE=America/Mexico_City
+fi
+
+if test -z "$JDBCCP_JVM_OPTS"; then 
+  export JDBCCP_JVM_OPTS="-server "
+fi
+
+export JDBCCP_NAME=iw-robot
+export JDBCCP_STARTER=jdbc_client_portable.core
+
+# Check for JAVA
+echo "Verifying JAVA installation ..."
+if [[ -n "$JAVA_HOME" ]] && [[ -x "$JAVA_HOME/bin/java" ]];  then
+  JAVA_BIN="$JAVA_HOME/bin/java"
+elif type -p java; then
+  JAVA_BIN=java
+  $JAVA_BIN -version
+else
+  echo "No JAVA installation found, please verify. Exiting ..."
+  exit 1
+fi
+
+echo "Using JVM installed on : $JAVA_BIN ..."
+  
+# Check version
+if [[ "$JAVA_BIN" ]]; then
+  JAVA_VERSION=$("$JAVA_BIN" -version 2>&1 | awk -F '"' '/version/ {print $2}')
+fi
+
+$JAVA_BIN -Xms$MININUM_MEMORY -Xmx$MAXIMUM_MEMORY -Duser.timezone=$TIMEZONE $JDBCCP_JVM_OPTS -cp "$JDBCCP_LIB" $JDBCCP_STARTER "$@" 
