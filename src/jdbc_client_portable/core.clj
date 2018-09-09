@@ -12,7 +12,7 @@
    ["-p" "--port PORT" "port of the database"]
    ["-U" "--user USERNAME" "database user"]
    ["-P" "--password PASSWORD" "database password"]
-   ["-C" "--connection-uri URI" "subprotocol://user:password@host:post/subname"]
+   ["-C" "--connection-uri URI" "subprotocol://user:password@host:port/subname"]
    ["-R" "--subprotocol SUBPROTOCOL" "subprotocol associated with driver"]
    ["-S" "--subname SUBNAME_PATH" "jdbcURL without prefix (//localhost:...)"]
    

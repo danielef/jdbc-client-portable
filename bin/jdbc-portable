@@ -43,7 +43,6 @@ fi
 export JDBCCP_STARTER=jdbc_client_portable.core
 
 # Check for JAVA
-echo "Verifying JAVA installation ..."
 if [[ -n "$JAVA_HOME" ]] && [[ -x "$JAVA_HOME/bin/java" ]];  then
   JAVA_BIN="$JAVA_HOME/bin/java"
 elif type -p java; then
@@ -53,8 +52,6 @@ else
   echo "No JAVA installation found, please verify. Exiting ..."
   exit 1
 fi
-
-echo "Using JVM installed on : $JAVA_BIN ..."
   
 # Check version
 if [[ "$JAVA_BIN" ]]; then
