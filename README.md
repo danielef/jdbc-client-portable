@@ -64,7 +64,7 @@ $ bin/jdbc-portable --dbtype postgresql --dbname postgres --host localhost --use
 ```
 
 ## Drivers
-Must be placed in `lib/` or `target/` directory
+JDBC drivers must be placed in `lib/` or `target/` directory
 ```
 $ ls target
 $ ls -l target/
