@@ -45,9 +45,8 @@ export JDBCCP_STARTER=jdbc_client_portable.core
 # Check for JAVA
 if [[ -n "$JAVA_HOME" ]] && [[ -x "$JAVA_HOME/bin/java" ]];  then
   JAVA_BIN="$JAVA_HOME/bin/java"
-elif type -p java; then
+elif [[ "$( type -p java )" == *java* ]] ; then
   JAVA_BIN=java
-  $JAVA_BIN -version
 else
   echo "No JAVA installation found, please verify. Exiting ..."
   exit 1
@@ -55,7 +54,7 @@ fi
   
 # Check version
 if [[ "$JAVA_BIN" ]]; then
-  JAVA_VERSION=$("$JAVA_BIN" -version 2>&1 | awk -F '"' '/version/ {print $2}')
+  JAVA_VERSION=$( "$JAVA_BIN" -version 2>&1 | awk -F '"' '/version/ {print $2}' )
 fi
 
 $JAVA_BIN -Xms$MININUM_MEMORY -Xmx$MAXIMUM_MEMORY -Duser.timezone=$TIMEZONE $JDBCCP_JVM_OPTS -cp "$JDBCCP_LIB" $JDBCCP_STARTER "$@" 
